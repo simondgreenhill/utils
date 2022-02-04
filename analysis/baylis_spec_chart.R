@@ -112,6 +112,25 @@ make_spec_plot <- function(estimates, category, order, n_per_group=NULL) {
     return(spec_plot)    
 }
 
+make_column_labels = function(estimates, order) {
+    col_labs = ggplot(estimates,
+                      aes(x = !!order, y=0, 
+                          label=glue('({seq(length(!!order))})'))) +
+        geom_text(fontface='bold') +
+        theme_minimal() +
+        theme(axis.title.x = element_blank(),
+              axis.ticks.x = element_blank(),
+              axis.line.x = element_blank(),
+              axis.text.x = element_blank(),
+              axis.text.y = element_blank(),
+              axis.title.y = element_blank(),
+              axis.ticks.y = element_blank(),
+              axis.line.y = element_blank(),
+              panel.grid = element_blank())
+    
+    return(col_labs)
+}
+
 make_n_plot = function(estimates, order) {
     n_plot = ggplot(estimates, 
                     aes(x = !!order, y=0, label=label_comma()(N))) +
@@ -146,6 +165,8 @@ make_spec_chart = function(estimates, categories, category_labels=NULL,
         category_labels = categories
     }
     
+    col_labs = make_column_labels(estimates, order)
+    
     coefs = make_coef_plot(estimates, order, n_per_group, 
                            coefficient_label=coefficient_label)
     specs = lapply(categories, make_spec_plot, estimates=estimates, order=order,
@@ -153,15 +174,15 @@ make_spec_chart = function(estimates, categories, category_labels=NULL,
     n_plot = make_n_plot(estimates, order)
     
     # calculate relative heights based on levels of each category
-    n_cats = sapply(categories, function(x) length(unique(estimates[, x]))) + 2
+    n_cats = sapply(categories, function(x) length(unique(estimates[, x]))) + 3
     hts = n_cats / (sum(n_cats) + length(categories))
-    combined = plot_grid(plotlist = c(list(coefs), specs, list(n_plot)), 
+    combined = plot_grid(plotlist = c(list(col_labs), list(coefs), specs, list(n_plot)), 
                          labels = c("", category_labels, ""),
                          label_size = 12,
                          label_fontface = "bold",
                          vjust = 0.5,
                          hjust = -0.1,
-                         rel_heights = c(1, hts, 0.1),
+                         rel_heights = c(0.1, 1, hts, 0.1),
                          ncol = 1,
                          align = "v")
     return(combined)
