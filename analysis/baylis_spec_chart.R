@@ -5,7 +5,7 @@
 # Edited by Simon Greenhill, sgreenhill@berkeley.edu
 
 # Create sensitivity curve of coefficient estimates
-pacman::p_load(tidyverse, cowplot, fastDummies)
+pacman::p_load(tidyverse, cowplot, fastDummies, scales)
 
 # Setup ----
 theme_set(theme_cowplot())
@@ -45,32 +45,25 @@ make_coef_plot = function(estimates, order=NULL, n_per_group=NULL,
 
 # Function to create a specification plot for a single category. 
 make_spec_plot <- function(estimates, category, order, n_per_group=NULL) {
-    # specs <- dummy_cols(estimates,
-    #                     select_columns = category,
-    #                     remove_selected_columns = T) %>%
-    #     select(!!order, starts_with(category)) %>% 
-    #     pivot_longer(starts_with(category), names_prefix = paste0(category, "_")) %>%
-    #     mutate(name = factor(name, levels = rev(unique(name))))
-    # 
-    # browser()
     
     # figure out how many additional columns
     k = lapply(strsplit(estimates[,category], ","), length) %>%
         unlist() %>%
         max()
     
+    # browser()
+    
     if (k > 1) {
         colnames = paste0(rep(category), seq(k))
         estimates = separate(
             estimates, 
-            controls, 
+            category,
             colnames, 
             sep=', ', 
             fill='right')
     } else {
         colnames = category
     }
-    
     
     specs = dummy_cols(
         estimates,
@@ -96,10 +89,7 @@ make_spec_plot <- function(estimates, category, order, n_per_group=NULL) {
               axis.text.y = element_text(size = 12),
               axis.title.y = element_blank(),
               axis.ticks.y = element_blank(),
-              axis.line.y = element_blank(),
-              # panel.grid.major.x = element_blank(),
-              # panel.grid.minor.x = element_blank()
-              # panel.grid = element_blank()
+              axis.line.y = element_blank()
               )
     
     if (!is.null(n_per_group)) {
@@ -153,7 +143,8 @@ make_n_plot = function(estimates, order) {
 
 # function to create combined coefficients and specifications array
 make_spec_chart = function(estimates, categories, category_labels=NULL,
-                           order=NULL, n_per_group=NULL, coefficient_label=NULL) {
+                           order=NULL, n_per_group=NULL, coefficient_label=NULL,
+                           plot_n=TRUE) {
     #' order: quasiquotation (name of order column). default: NULL
     #' n_per_group: number of specifications between gridlines
     if (is.null(order)) {
@@ -171,19 +162,35 @@ make_spec_chart = function(estimates, categories, category_labels=NULL,
                            coefficient_label=coefficient_label)
     specs = lapply(categories, make_spec_plot, estimates=estimates, order=order,
                    n_per_group)
-    n_plot = make_n_plot(estimates, order)
+    if (plot_n) {
+        n_plot = make_n_plot(estimates, order)
+        
+        # calculate relative heights based on levels of each category
+        n_cats = sapply(categories, function(x) length(unique(estimates[, x]))) + 3
+        hts = n_cats / (sum(n_cats) + length(categories))
+        combined = plot_grid(plotlist = c(list(col_labs), list(coefs), specs, list(n_plot)), 
+                             labels = c("", "", category_labels, ""),
+                             label_size = 12,
+                             label_fontface = "bold",
+                             vjust = 0.5,
+                             hjust = -0.1,
+                             rel_heights = c(0.1, 1, hts, 0.1),
+                             ncol = 1,
+                             align = "v")    
+    } else {
+        # calculate relative heights based on levels of each category
+        n_cats = sapply(categories, function(x) length(unique(estimates[, x]))) + 2
+        hts = n_cats / (sum(n_cats) + length(categories))
+        combined = plot_grid(plotlist = c(list(col_labs), list(coefs), specs), 
+                             labels = c("", "", category_labels, ""),
+                             label_size = 12,
+                             label_fontface = "bold",
+                             vjust = 0.5,
+                             hjust = -0.1,
+                             rel_heights = c(0.1, 1, hts),
+                             ncol = 1,
+                             align = "v") 
+    }
     
-    # calculate relative heights based on levels of each category
-    n_cats = sapply(categories, function(x) length(unique(estimates[, x]))) + 3
-    hts = n_cats / (sum(n_cats) + length(categories))
-    combined = plot_grid(plotlist = c(list(col_labs), list(coefs), specs, list(n_plot)), 
-                         labels = c("", category_labels, ""),
-                         label_size = 12,
-                         label_fontface = "bold",
-                         vjust = 0.5,
-                         hjust = -0.1,
-                         rel_heights = c(0.1, 1, hts, 0.1),
-                         ncol = 1,
-                         align = "v")
     return(combined)
 }
