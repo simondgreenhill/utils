@@ -1,4 +1,4 @@
-pacman::p_load(tigris, rnaturalearth, ggplot2)
+pacman::p_load(tigris, rnaturalearth, ggplot2, sf)
 
 make_us_base_map = function(admin_boundaries=states) {
     #' Function that produces a base map with the Great Lakes and admin 
@@ -16,7 +16,7 @@ make_us_base_map = function(admin_boundaries=states) {
         filter(name %in% c('Lake Superior', 'Lake Erie', 'Lake Michigan', 'Lake Huron'))
     
     base_map = ggplot() + 
-        geom_sf(data=shp, color="grey", fill="grey ", lwd=0.1) +
+        geom_sf(data=shp, color="grey", fill="white ", lwd=0.1) +
         geom_sf(data=lakes, fill="white", color="grey", lwd=0.1) + 
         theme_bw() +
         theme(
