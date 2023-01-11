@@ -1,5 +1,5 @@
 # plot coefficients
-plot_event_study = function(reg) {
+plot_event_study = function(reg, ylabel=NULL, caption=NULL) {
     ci = confint(reg)
     coefs = tibble(
         event_time = names(summary(reg)$coefficients),
@@ -9,7 +9,7 @@ plot_event_study = function(reg) {
     ) %>%
         mutate(
             # convert event time to numeric
-            event_time = unlist(str_extract_numbers(coefs$event_time, negs=T))
+            event_time = unlist(str_extract_numbers(event_time, negs=T))
         )
     
     plot = ggplot(coefs) +
@@ -19,7 +19,8 @@ plot_event_study = function(reg) {
         geom_errorbar(aes(x=event_time, ymin=ci_l, ymax=ci_h)) +
         labs(
             x = 'Event time',
-            y = 'Point estimate and 95% CI'
+            y = ifelse(is.null(ylabel), 'Point estimate and 95% CI', ylabel),
+            caption = ifelse(is.null(caption), '', str_wrap(caption, 100))
         )
     
     return(plot)
