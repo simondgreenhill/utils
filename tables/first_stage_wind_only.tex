@@ -1,0 +1,33 @@
+
+\begingroup
+\centering
+\begin{tabular}{lccc}
+   \tabularnewline \midrule \midrule
+   Dependent Variable: & \multicolumn{3}{c}{RMS Displacement, unfiltered}\\
+   Model:                       & (1)           & (2)                   & (3)\\  
+   \midrule
+   \emph{Variables}\\
+   Wind angle $\in [0, 90)$     & 0.004$^{***}$ & -0.0001               & 0.002\\   
+                                & (0.0007)      & (0.30)                & (912.0)\\   
+   Wind angle $\in [90, 180)$   & 0.004$^{***}$ & $-1.7\times 10^{-5}$  & 0.002\\   
+                                & (0.0005)      & (0.30)                & (912.0)\\   
+   Wind angle $\in [180, 270)$  & 0.004$^{***}$ & $7.2\times 10^{-5}$   & 0.002\\   
+                                & (0.0004)      & (0.30)                & (912.0)\\   
+   Wind angle $\in [270, 360)$  & 0.004$^{***}$ & 0.0004                & 0.002\\   
+                                & (0.0010)      & (0.30)                & (912.0)\\   
+   \midrule
+   \emph{Fixed-effects}\\
+   Hourly temp. bins            &               & Yes                   & Yes\\  
+   Daily total precip. bins     &               & Yes                   & Yes\\  
+   Zip Code                     &               &                       & Yes\\  
+   \midrule
+   \emph{Fit statistics}\\
+   Wald (joint nullity)         & 31.922        & 1.0636                & 0.35805\\  
+   Observations                 & 484,596       & 484,596               & 484,596\\  
+   \midrule \midrule
+   \multicolumn{4}{l}{\emph{Clustered (unique\_id) standard-errors in parentheses}}\\
+   \multicolumn{4}{l}{\emph{Signif. Codes: ***: 0.01, **: 0.05, *: 0.1}}\\
+\end{tabular}
+\par\endgroup
+
+

@@ -1,0 +1,34 @@
+
+\begingroup
+\centering
+\begin{tabular}{lcccc}
+   \tabularnewline \midrule \midrule
+   Dependent Variable: & \multicolumn{4}{c}{log(RMS Displacement), 4.0-14.0 Hz}\\
+   Model:                       & (1)           & (2)     & (3)           & (4)\\  
+   \midrule
+   \emph{Variables}\\
+   Constant                     & -17.9$^{***}$ &         &               &   \\   
+                                & (0.21)        &         &               &   \\   
+   Wind angle $\in [0, 90)$     & -0.07         & 0.11    & -0.03         & -0.03\\   
+                                & (0.17)        & (0.18)  & (0.03)        & (0.03)\\   
+   Wind angle $\in [90, 180)$   & 0.006         & 0.06    & -0.22$^{***}$ & -0.21$^{***}$\\   
+                                & (0.15)        & (0.15)  & (0.03)        & (0.03)\\   
+   Wind angle $\in [180, 270)$  & 0.008         & -0.08   & -0.14$^{***}$ & -0.12$^{***}$\\   
+                                & (0.16)        & (0.15)  & (0.03)        & (0.02)\\   
+   \midrule
+   \emph{Fixed-effects}\\
+   Hourly temp. bins            &               & Yes     & Yes           & Yes\\  
+   Daily total precip. bins     &               & Yes     & Yes           & Yes\\  
+   Zip Code                     &               &         & Yes           & \\  
+   Seismic monitor              &               &         &               & Yes\\  
+   \midrule
+   \emph{Fit statistics}\\
+   Wald (joint nullity)         & 0.45906       & 0.32620 & 20.052        & 20.089\\  
+   Observations                 & 481,150       & 481,150 & 481,150       & 481,150\\  
+   \midrule \midrule
+   \multicolumn{5}{l}{\emph{Clustered (Seismic monitor) standard-errors in parentheses}}\\
+   \multicolumn{5}{l}{\emph{Signif. Codes: ***: 0.01, **: 0.05, *: 0.1}}\\
+\end{tabular}
+\par\endgroup
+
+

@@ -1,0 +1,30 @@
+
+\begingroup
+\centering
+\begin{tabular}{lcccccccc}
+   \tabularnewline \midrule \midrule
+   Dependent Variables: & \multicolumn{4}{c}{log(RMS Displacement), 4.0-14.0Hz} & \multicolumn{4}{c}{log(RMS Displacement), unfiltered}\\
+   Model:                           & (1)     & (2)     & (3)     & (4)          & (5)     & (6)     & (7)     & (8)\\  
+   \midrule
+   \emph{Variables}\\
+   Downwind of electric train track & -0.24   & -0.25   & -0.04   & -0.05$^{**}$ & 0.09    & 0.07    & 0.04    & 0.02\\   
+                                    & (0.19)  & (0.18)  & (0.03)  & (0.02)       & (0.17)  & (0.17)  & (0.05)  & (0.04)\\   
+   \midrule
+   \emph{Fixed-effects}\\
+   Hourly temp. bins                &         & Yes     & Yes     & Yes          &         & Yes     & Yes     & Yes\\  
+   Daily total precip. bins         &         & Yes     & Yes     & Yes          &         & Yes     & Yes     & Yes\\  
+   Zip Code                         &         &         & Yes     &              &         &         & Yes     & \\  
+   Month                            &         &         & Yes     & Yes          &         &         & Yes     & Yes\\  
+   Year                             &         &         & Yes     & Yes          &         &         & Yes     & Yes\\  
+   Seismic Monitor                  &         &         &         & Yes          &         &         &         & Yes\\  
+   \midrule
+   \emph{Fit statistics}\\
+   Wald (joint nullity)             & 1.6470  & 1.9445  & 1.8703  & 4.3154       & 0.28355 & 0.16448 & 0.70032 & 0.14270\\  
+   Observations                     & 380,418 & 380,418 & 380,418 & 380,418      & 380,418 & 380,418 & 380,418 & 380,418\\  
+   \midrule \midrule
+   \multicolumn{9}{l}{\emph{Clustered (Seismic Monitor) standard-errors in parentheses}}\\
+   \multicolumn{9}{l}{\emph{Signif. Codes: ***: 0.01, **: 0.05, *: 0.1}}\\
+\end{tabular}
+\par\endgroup
+
+
